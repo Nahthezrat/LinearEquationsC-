@@ -19,8 +19,6 @@ namespace LinearEquations
             this.matrix_A = matrix_A.Clone();
             this.vector_b = vector_b.Clone();
             this.dim = matrix_A.ColumnCount;
-            //A = new double[4, 4] { { 10 * N + 1, 4, 2, 2 }, { 4, 8, 0, 2 }, { 2, 0, 9, -4 }, { 2, 2, -4, 12 } };
-            //B = new double[4] { 2 * N * Math.Sin(N), 5 * (Math.Sin(N) - Math.Cos(N)), 7 * (Math.Cos(N) + Math.Sin(N)), 3 * Math.Sin(N) };
         }
 
         public void Show()
@@ -37,7 +35,8 @@ namespace LinearEquations
             }
         }
 
-        public Vector<double> MinimalResidualMethod(double Eps = 0.0001)
+        // Метод минимальных невязок / Метод скорейшего спуска
+        public Vector<double> MinimalResidualMethod(bool speedly = false, double Eps = 0.00001)
         {
             var rk = Vector<double>.Build.Dense(dim);
             var xk = Vector<double>.Build.Dense(dim);
@@ -59,7 +58,7 @@ namespace LinearEquations
 
                 // theta|k| = (rk, Ark) / (Ark, Ark)
                 Ark = matrix_A.Multiply(rk);
-                theta = (rk.DotProduct(Ark)) / (Ark.DotProduct(Ark));
+                theta = speedly ? (rk.DotProduct(rk) / Ark.DotProduct(rk)) : (rk.DotProduct(Ark) / Ark.DotProduct(Ark));
                 Console.Write("theta: {0:f3}\n", theta);
 
                 // x|k+1| = x|k| - r|k|*theta|k|
@@ -76,6 +75,7 @@ namespace LinearEquations
 
             return xk;
         }
+
 
     }
 }

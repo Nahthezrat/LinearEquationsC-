@@ -36,7 +36,7 @@ namespace LinearEquations
             var system = new LinearSystem(matrix_A, vector_b);
             system.Show();
 
-            vector_X = system.MinimalResidualMethod();
+            vector_X = system.MinimalResidualMethod(true);
 
             Console.Write("vector_X:\t");
             for (int i = 0; i < matrix_A.ColumnCount; i++)
