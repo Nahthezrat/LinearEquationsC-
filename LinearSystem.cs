@@ -37,15 +37,16 @@ namespace LinearEquations
             }
         }
 
-        public void MinimalResidualMethod()
+        public Vector<double> MinimalResidualMethod(double Eps = 0.0001)
         {
             var rk = Vector<double>.Build.Dense(dim);
             var xk = Vector<double>.Build.Dense(dim);
             var Ark = Vector<double>.Build.Dense(dim);
             double theta;
+            int count = 0;
 
             // Итерационный процесс
-            for (int k = 0; k < 30; k++)
+            while (Math.Sqrt((matrix_A.Multiply(xk).Subtract(vector_b).DotProduct(matrix_A.Multiply(xk).Subtract(vector_b))) / Math.Sqrt(vector_b.DotProduct(vector_b))) >= Eps)
             {
                 // r|k| = A*xk - B
                 rk = matrix_A.Multiply(xk).Subtract(vector_b);
@@ -66,13 +67,14 @@ namespace LinearEquations
                 Console.Write("xk:\t");
                 for (int i = 0; i < dim; i++)
                 {
-                    Console.Write("{0:f3}\t", xk[i]);
+                    Console.Write("{0:f5}\t", xk[i]);
                 }
                 Console.WriteLine();
 
-
-                Console.WriteLine();
+                Console.WriteLine("count: {0}\n", count++);
             }
+
+            return xk;
         }
 
     }
