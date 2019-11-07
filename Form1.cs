@@ -41,11 +41,32 @@ namespace LinearEquations
             Console.Write("vector_X:\t");
             for (int i = 0; i < matrix_A.ColumnCount; i++)
             {
-                Console.Write("{0:f3}\t", vector_X[i]);
+                Console.Write("{0:f5}\t", vector_X[i]);
+            }
+            Console.WriteLine();
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            const int N = 10;
+            var matrix_A = Matrix<double>.Build.DenseOfArray(new double[,] { { 10 * N + 1, 4, 2, 2 }, { 4, 8, 0, 2 }, { 2, 0, 9, -4 }, { 2, 2, -4, 12 } });
+            var vector_b = Vector<double>.Build.DenseOfArray(new double[] { 2 * N * Math.Sin(N), 5 * (Math.Sin(N) - Math.Cos(N)), 7 * (Math.Cos(N) + Math.Sin(N)), 3 * Math.Sin(N) });
+            var vector_X = Vector<double>.Build.Dense(matrix_A.ColumnCount);
+            
+
+            var system = new LinearSystem(matrix_A, vector_b);
+            system.Show();
+
+            vector_X = system.GaussMethod();
+
+            Console.Write("vector_X:\t");
+            for (int i = 0; i < matrix_A.ColumnCount; i++)
+            {
+                Console.Write("{0:f5}\t", vector_X[i]);
             }
             Console.WriteLine();
         }
 
     }
-
 }
+
